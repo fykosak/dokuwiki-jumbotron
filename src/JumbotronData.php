@@ -3,7 +3,7 @@
 namespace FYKOS\dokuwiki\template\Jumbotron;
 
 /**
- * Translated to en by Matěj Mezera <m.mezera@fykos.cz>
+ * @author Matěj Mezera <m.mezera@fykos.cz> Translation en
  */
 class JumbotronData {
 

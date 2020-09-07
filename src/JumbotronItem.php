@@ -1,7 +1,10 @@
 <?php
 
 namespace FYKOS\dokuwiki\template\Jumbotron;
-
+/**
+ * Class JumbotronItem
+ * @author Michal Červeňák <miso@fykos.cz>
+ */
 class JumbotronItem {
 
     private string $headline;

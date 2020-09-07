@@ -1,7 +1,10 @@
 <?php
 
 namespace FYKOS\dokuwiki\template\Jumbotron;
-
+/**
+ * Class JumbotronGroup
+ * @author Michal Červeňák <miso@fykos.cz>
+ */
 class JumbotronGroup {
 
     /** @var JumbotronItem[] */

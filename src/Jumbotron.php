@@ -12,57 +12,61 @@ class Jumbotron {
 
     private string $pageId;
 
-    public function setPageId(string $pageId): self {
+    public function __construct(string $pageId) {
         $this->pageId = $pageId;
-        return $this;
     }
 
-    private function printSecondMenuContainer(BootstrapNavBar $secondMenu): void {
-        echo '<div class="row nav-container hidden-md-down second-nav">';
-        $secondMenu->render();
-        echo '</div>';
-    }
-
-    private function printCarouselContainer(string $stream): void {
-        echo '<div class="carousel-container">';
-        echo p_render('xhtml', p_get_instructions('{{news-carousel>stream="' . $stream . '"}}'), $info);
-        echo '</div>';
-    }
-
-    private function printJumbotronContainer(JumbotronItem $item): void {
-        echo '<div class="row jumbotron-background" data-background="' . $item->getOuterContainerBackgroundId() . '">';
-
-        if ($item->getHeadline() || $item->getText()) {
-            echo '<div class="offset-lg-1 col-lg-8 offset-xl-3 col-xl-5">';
-            echo '<div class="jumbotron-inner-container"
-                             data-background="' . $item->getInnerContainerBackgroundId() . '">';
-            echo '<h1>' . $item->getHeadline() . '</h1>';
-            echo '<p>' . $item->getText() . '</p>';
-            echo '</div>';
-            echo '</div>';
-        }
-        echo '</div>';
-    }
-
-    public function render(BootstrapNavBar $secondMenu): void {
+    public function render(BootstrapNavBar $secondMenu): string {
         $stream = $this->getStreamByPage();
         $jumbotronData = new JumbotronData();
         $item = $jumbotronData->getJumbotronDataByPage($this->pageId)->getRandom();
+        $html = '';
         if ($stream) {
-            echo '<div class="container-fluid header-image jumbotron">';
-            $this->printCarouselContainer($stream);
-            $this->printSecondMenuContainer($secondMenu);
-            echo '</div>';
+            $html .= '<div class="container-fluid header-image jumbotron">';
+            $html .= $this->printCarouselContainer($stream);
+            $html .= $this->printSecondMenuContainer($secondMenu);
+            $html .= '</div>';
         } elseif ($item) {
-            echo '<div class="container-fluid header-image jumbotron">';
-            $this->printJumbotronContainer($item);
-            $this->printSecondMenuContainer($secondMenu);
-            echo '</div>';
+            $html .= '<div class="container-fluid header-image jumbotron">';
+            $html .= $this->printJumbotronContainer($item);
+            $html .= $this->printSecondMenuContainer($secondMenu);
+            $html .= '</div>';
         } else {
-            echo '<div class="container-fluid header mb-3">';
-            $this->printSecondMenuContainer($secondMenu);
-            echo '</div>';
+            $html .= '<div class="container-fluid header mb-3">';
+            $html .= $this->printSecondMenuContainer($secondMenu);
+            $html .= '</div>';
         }
+        return $html;
+    }
+
+    private function printSecondMenuContainer(BootstrapNavBar $secondMenu): string {
+        $html = '<div class="row nav-container hidden-md-down second-nav">';
+        $html .= $secondMenu->render();
+        $html .= '</div>';
+        return $html;
+    }
+
+    private function printCarouselContainer(string $stream): string {
+        $html = '<div class="carousel-container">';
+        $html .= p_render('xhtml', p_get_instructions('{{news-carousel>stream="' . $stream . '"}}'), $info);
+        $html .= '</div>';
+        return $html;
+    }
+
+    private function printJumbotronContainer(JumbotronItem $item): string {
+        $html = '<div class="row jumbotron-background" data-background="' . $item->getOuterContainerBackgroundId() . '">';
+
+        if ($item->getHeadline() || $item->getText()) {
+            $html .= '<div class="offset-lg-1 col-lg-8 offset-xl-3 col-xl-5">';
+            $html .= '<div class="jumbotron-inner-container"
+                             data-background="' . $item->getInnerContainerBackgroundId() . '">';
+            $html .= '<h1>' . $item->getHeadline() . '</h1>';
+            $html .= '<p>' . $item->getText() . '</p>';
+            $html .= '</div>';
+            $html .= '</div>';
+        }
+        $html .= '</div>';
+        return $html;
     }
 
     /**
